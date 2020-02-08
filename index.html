@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Судоку</title>
+</head>
+<style>
+    body{
+        cursor: default;
+    }
+    #pole{
+        position: relative;z-index: 1;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        width: 550px;
+        height: 550px;
+        
+        
+        
+    }
+    .kletka{
+        font-size: 45px;
+        line-height: 55px;
+        font-weight: 900;
+         text-align: center;
+        
+    }
+    .correctNumber {
+        background: rgba(0,0,0, 0.3);
+        
+    }
+   
+    #tabloBut{
+        width: 244px;
+        border: 1px solid black;
+    }
+    #tabloBut button{
+        width: 40px;
+        height: 20px;
+    }
+    #result{
+        font-size: 20px;
+        font-weight: 700;
+        
+        width: 100px;
+        height: 50px;
+        border: 1px solid black;
+        border-radius: 5px;
+    }
+    .footer {
+        display: flex;
+        justify-content: space-around;
+        width: 40%;
+        margin: 30px auto;
+    }
+</style>
+<body><div style="width: 550px; margin: 0 auto; position: relative;"><div style='position: absolute; z-index: 0;'><img src="fon.png" style="width: 550px;"></div><div id='pole'></div></div>
+  <div class="footer">
+    <div id="tabloBut">  <div>число: <span id='appendNumber'></span></div>
+    <button>1</button>
+    <button>2</button>
+    <button>3</button>
+    <button>4</button>
+    <button>5</button>
+    <button>6</button>
+    <button>7</button>
+    <button>8</button>
+    <button>9</button>
+    <button></button></div>
+    <div id='result'>Проверить результат</div>
+  </div>
+  
+
+    <script>
+        /*
+        Расшифрока
+        cell - ячейка
+        selectedNumber - выбранное число 1...9
+        createdCell - созданная ячейка
+        .resolution - разрешение true/false
+        varButton - переменная с кнопками        
+        openCell - ячейка с правильным ответом
+        resultat - число совпадений
+        */
+        let showAnswer =[2,4,11,18,19,23,24,26,27,28,34,38,39,41,43,44,48,54,55,56,58,59,63,64,71,78,80];
+        let answer = '897362514564198732321547986716254398489731265253986471142879653675413829938625147';
+        let cell = 81;
+        let resultat=0;
+        let selectedNumber = document.getElementById('appendNumber');
+        //вывести поле
+        for(let i=1; i<cell+1;i++){
+            let createdCell = document.createElement('div');
+            createdCell.className='kletka';
+            createdCell.id=i;
+            createdCell.resolution=true;
+           // createdCell.innerHTML=i;
+            createdCell.onclick = ()=>{
+                if(createdCell.resolution){
+                createdCell.innerHTML=selectedNumber.innerHTML;
+                createdCell.className='kletka get'
+                }
+            }
+            let poleS =document.getElementById('pole');
+            poleS.appendChild(createdCell);
+            
+        }
+        //вывести правильные ответы
+        for(let i=0; i<showAnswer.length;i++){
+            
+            let openCell=document.getElementById(showAnswer[i]);
+        openCell.innerHTML= answer[showAnswer[i]-1];
+        openCell.resolution=false;
+        openCell.className='kletka correctNumber';
+        }
+        
+        //выбор числа
+        let varButton = document.getElementById('tabloBut').getElementsByTagName('button');
+        console.log(varButton);
+        for(let i =0; i<varButton.length;i++){
+            varButton[i].onclick = ()=>{selectedNumber.innerHTML= varButton[i].innerHTML};
+        }
+        
+        //проверить результат
+        document.getElementById('result').onclick = ()=>{
+            for(let i=0;i<cell;i++){
+            let createdCell=document.getElementById(i+1);
+            if(answer[i]== createdCell.innerHTML){resultat++}
+        } if(resultat==81){alert('вы победили')} else {alert( 'еще нужно ' + (81 - +resultat) + ' совпадений. Попробуйте еще'); resultat=0}
+           
+        }
+        
+    
+    </script> 
+</body>
+</html>
